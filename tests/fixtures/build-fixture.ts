@@ -24,6 +24,11 @@ export async function buildFixtureDb(path: string): Promise<void> {
   db.run(`INSERT INTO fields (fieldID, fieldName) VALUES (1,'title'),(2,'abstractNote'),(3,'date');`);
   db.run(`INSERT INTO creatorTypes (creatorTypeID, creatorType) VALUES (1,'author');`);
 
+  // collections
+  db.run(`INSERT INTO collections (collectionID, collectionName, parentCollectionID, key) VALUES
+    (1, 'AI', NULL, 'COLLAI01'),
+    (2, 'Transformers', 1, 'COLLTR02');`);
+
   // paper item 10 (key ABCD1234), attachment item 11
   db.run(`INSERT INTO items (itemID, itemTypeID, key, dateAdded) VALUES (10, 4, 'ABCD1234', '2026-07-02 00:00:00');`);
   db.run(`INSERT INTO items (itemID, itemTypeID, key, dateAdded) VALUES (11, 14, 'ATTACH001', '2026-07-02 00:00:00');`);
@@ -38,6 +43,9 @@ export async function buildFixtureDb(path: string): Promise<void> {
 
   db.run(`INSERT INTO tags (tagID, name) VALUES (300,'theme/attention'),(301,'nlp');`);
   db.run(`INSERT INTO itemTags (itemID, tagID, type) VALUES (10,300,0),(10,301,0);`);
+
+  // paper belongs to Transformers collection
+  db.run(`INSERT INTO collectionItems (collectionID, itemID, orderIndex) VALUES (2, 10, 0);`);
 
   // annotations are child items 12 & 13; their keys become highlight block ids later
   db.run(`INSERT INTO items (itemID, itemTypeID, key, dateAdded) VALUES (12, 15, 'ANNOAB12', '2026-07-03 00:00:00'),(13, 15, 'ANNOCD34', '2026-07-03 00:00:00');`);

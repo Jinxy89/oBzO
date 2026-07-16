@@ -47,4 +47,15 @@ describe("readLibrary", () => {
     const lib = readLibrary(handle);
     expect(lib.items.map((i) => i.key)).toEqual(["ABCD1234"]);
   });
+
+  it("maps collections and the paper's collection membership", () => {
+    const lib = readLibrary(handle);
+    expect(lib.collections).toHaveLength(2);
+    const ai = lib.collections.find((c) => c.name === "AI")!;
+    const tr = lib.collections.find((c) => c.name === "Transformers")!;
+    expect(ai.parentId).toBeNull();
+    expect(tr.parentId).toBe(ai.id);
+    const paper = lib.items.find((i) => i.key === "ABCD1234")!;
+    expect(paper.collectionIds).toContain(2);
+  });
 });
