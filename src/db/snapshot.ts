@@ -14,18 +14,26 @@ export async function openSnapshot(dbPath: string): Promise<SnapshotHandle> {
   }
 
   const tempDir = mkdtempSync(join(tmpdir(), "obzo-db-"));
-  const tempCopy = join(tempDir, "snapshot.sqlite");
-  copyFileSync(dbPath, tempCopy);
+  try {
+    const tempCopy = join(tempDir, "snapshot.sqlite");
+    copyFileSync(dbPath, tempCopy);
 
-  const SQL = await initSqlJs();
-  const bytes = readFileSync(tempCopy);
-  const db = new SQL.Database(bytes);
+    const SQL = await initSqlJs();
+    const bytes = readFileSync(tempCopy);
+    const db = new SQL.Database(bytes);
 
-  return {
-    db,
-    close() {
-      db.close();
-      rmSync(tempDir, { recursive: true, force: true });
-    },
-  };
+    return {
+      db,
+      close() {
+        try {
+          db.close();
+        } finally {
+          rmSync(tempDir, { recursive: true, force: true });
+        }
+      },
+    };
+  } catch (error) {
+    rmSync(tempDir, { recursive: true, force: true });
+    throw error;
+  }
 }
