@@ -41,6 +41,7 @@ describe("readLibrary", () => {
     const cd34 = paper.annotations.find((a) => a.key === "ANNOCD34")!;
     expect(cd34.color).toBe("#a28ae5");
     expect(cd34.comment).toBe("key mechanism");
+    expect(cd34.attachmentKey).toBe("ATTACH001");
   });
 
   it("excludes attachment and annotation items from the item list", () => {
