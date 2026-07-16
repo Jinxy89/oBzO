@@ -18,7 +18,7 @@ or make a decision, we log it here with a date so the completion status of each 
 | 2 | Round 2 — knowledge layer (synthesis, glossary, author/theme maps) | 🟢 Settled | 2026-07-10 |
 | 3 | Written spec / design doc (`SPEC.md`) | 🟢 Approved | 2026-07-16 |
 | 4 | Implementation plan — foundation (`docs/plans/2026-07-16-foundation.md`) | 🟢 Written | 2026-07-16 |
-| 5 | Implementation — foundation slice (scaffold + DB reader + model) | 🟠 In progress — Task 1/5 done (scaffold) | 2026-07-16 |
+| 5 | Implementation — foundation slice (scaffold + DB reader + model) | 🟢 Done — 5/5 tasks, reviewed (ready to merge) | 2026-07-16 |
 | 6 | Implementation plans — later slices (render, write, stubs, dashboard) | ⬜ Not started | — |
 
 Legend: ⬜ not started · 🟠 in progress · 🟡 drafted/pending · 🟢 done
@@ -102,3 +102,4 @@ Round 2 design is complete. Proceeding to write the consolidated spec (`SPEC.md`
 | 2026-07-10 | Project folder created at `/Users/jinxyw/Desktop/MY_PROJECT/OBzO`; progress log established. |
 | 2026-07-10 | Round 2 scoped to the deterministic knowledge/linking layer; explicitly **no AI**. |
 | 2026-07-16 | Spec approved. Foundation implementation plan written (`docs/plans/2026-07-16-foundation.md`): 5 TDD tasks — scaffold, domain model, DB snapshot, queries, sync skeleton. Scoped to SPEC §12 build steps 1–2; render/write/stubs/dashboard deferred to later plans. |
+| 2026-07-16 | Foundation implemented via subagent-driven TDD on branch `obzo-foundation` (9 commits `5ff5008`..`b17267e`). 10/10 tests, `typecheck` exit 0, `main.js` builds. Final whole-branch review: **ready to merge**, no Critical. Tracked follow-ups (see `.superpowers/sdd/progress.md`): **(Important)** ship `sql-wasm.wasm` + `locateFile` so the command runs inside Obsidian (tests pass via node_modules but Electron needs the wasm delivered); (Minor) WAL sidecar copy, N+1 queries, trashed/note-item filtering; (coverage) `relatedKeysFor`, untitled/null-firstName/post-copy-error branches. |
