@@ -10,10 +10,14 @@
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit"
   },
-  "keywords": ["obsidian", "zotero"],
+  "keywords": [
+    "obsidian",
+    "zotero"
+  ],
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^22.0.0",
+    "@types/sql.js": "^1.4.11",
     "builtin-modules": "^4.0.0",
     "esbuild": "^0.24.0",
     "obsidian": "^1.7.2",
