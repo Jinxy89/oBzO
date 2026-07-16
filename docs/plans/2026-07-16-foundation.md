@@ -464,7 +464,7 @@ describe("openSnapshot", () => {
   it("opens a copied DB and can query it", async () => {
     const handle = await openSnapshot(dbPath);
     const res = handle.db.exec("SELECT COUNT(*) AS n FROM items");
-    expect(res[0].values[0][0]).toBe(5);
+    expect(res[0].values[0][0]).toBe(4); // paper + attachment + 2 annotations
     handle.close();
   });
 

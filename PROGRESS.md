@@ -18,7 +18,7 @@ or make a decision, we log it here with a date so the completion status of each 
 | 2 | Round 2 — knowledge layer (synthesis, glossary, author/theme maps) | 🟢 Settled | 2026-07-10 |
 | 3 | Written spec / design doc (`SPEC.md`) | 🟢 Approved | 2026-07-16 |
 | 4 | Implementation plan — foundation (`docs/plans/2026-07-16-foundation.md`) | 🟢 Written | 2026-07-16 |
-| 5 | Implementation — foundation slice (scaffold + DB reader + model) | ⬜ Not started | — |
+| 5 | Implementation — foundation slice (scaffold + DB reader + model) | 🟠 In progress — Task 1/5 done (scaffold) | 2026-07-16 |
 | 6 | Implementation plans — later slices (render, write, stubs, dashboard) | ⬜ Not started | — |
 
 Legend: ⬜ not started · 🟠 in progress · 🟡 drafted/pending · 🟢 done

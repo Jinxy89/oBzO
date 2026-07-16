@@ -39,12 +39,11 @@ export async function buildFixtureDb(path: string): Promise<void> {
   db.run(`INSERT INTO tags (tagID, name) VALUES (300,'theme/attention'),(301,'nlp');`);
   db.run(`INSERT INTO itemTags (itemID, tagID, type) VALUES (10,300,0),(10,301,0);`);
 
-  // annotations are child items 12, 13, & 14; their keys become highlight block ids later
-  db.run(`INSERT INTO items (itemID, itemTypeID, key, dateAdded) VALUES (12, 15, 'ANNOAB12', '2026-07-03 00:00:00'),(13, 15, 'ANNOCD34', '2026-07-03 00:00:00'),(14, 15, 'ANNOEF56', '2026-07-03 00:00:00');`);
+  // annotations are child items 12 & 13; their keys become highlight block ids later
+  db.run(`INSERT INTO items (itemID, itemTypeID, key, dateAdded) VALUES (12, 15, 'ANNOAB12', '2026-07-03 00:00:00'),(13, 15, 'ANNOCD34', '2026-07-03 00:00:00');`);
   db.run(`INSERT INTO itemAnnotations (itemID, parentItemID, type, text, comment, color, pageLabel, sortIndex) VALUES
     (12, 11, 1, 'The Transformer allows for more parallelization', 'compare to [[recurrence]]', '#ffd400', '3', '00003|000100|00010'),
-    (13, 11, 1, 'self-attention', 'key mechanism', '#a28ae5', '2', '00002|000050|00005'),
-    (14, 11, 1, 'multi-head attention', 'enables parallel computation', '#ff9500', '4', '00004|000075|00015');`);
+    (13, 11, 1, 'self-attention', 'key mechanism', '#a28ae5', '2', '00002|000050|00005');`);
 
   const data = db.export();
   writeFileSync(path, Buffer.from(data));
