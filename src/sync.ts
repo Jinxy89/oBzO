@@ -1,4 +1,4 @@
-import { openSnapshot } from "./db/snapshot";
+import { openSnapshot, type SnapshotOptions } from "./db/snapshot";
 import { readLibrary } from "./db/queries";
 
 export interface SyncSummary {
@@ -7,8 +7,8 @@ export interface SyncSummary {
   annotations: number;
 }
 
-export async function syncFromDb(dbPath: string): Promise<SyncSummary> {
-  const handle = await openSnapshot(dbPath);
+export async function syncFromDb(dbPath: string, options?: SnapshotOptions): Promise<SyncSummary> {
+  const handle = await openSnapshot(dbPath, options);
   try {
     const lib = readLibrary(handle);
     const annotations = lib.items.reduce((sum, i) => sum + i.annotations.length, 0);

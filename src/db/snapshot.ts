@@ -8,7 +8,14 @@ export interface SnapshotHandle {
   close(): void;
 }
 
-export async function openSnapshot(dbPath: string): Promise<SnapshotHandle> {
+export interface SnapshotOptions {
+  locateFile?: (file: string) => string;
+}
+
+export async function openSnapshot(
+  dbPath: string,
+  options: SnapshotOptions = {},
+): Promise<SnapshotHandle> {
   if (!existsSync(dbPath)) {
     throw new Error(`OBzO: Zotero database not found at ${dbPath}`);
   }
@@ -18,7 +25,7 @@ export async function openSnapshot(dbPath: string): Promise<SnapshotHandle> {
     const tempCopy = join(tempDir, "snapshot.sqlite");
     copyFileSync(dbPath, tempCopy);
 
-    const SQL = await initSqlJs();
+    const SQL = await initSqlJs(options.locateFile ? { locateFile: options.locateFile } : undefined);
     const bytes = readFileSync(tempCopy);
     const db = new SQL.Database(bytes);
 
