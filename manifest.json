@@ -1,0 +1,9 @@
+{
+  "id": "obzo",
+  "name": "OBzO — Zotero Sync",
+  "version": "0.0.1",
+  "minAppVersion": "1.7.2",
+  "description": "Sync Zotero highlights, comments, and metadata into a linked, reviewable Obsidian knowledge base. Desktop-only, no AI.",
+  "author": "jinxyw",
+  "isDesktopOnly": true
+}
