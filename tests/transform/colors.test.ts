@@ -40,4 +40,18 @@ describe("groupByColor", () => {
     const groups = groupByColor([mk("a", "#ffd400")], colorMap, "Unsorted highlights");
     expect(groups.map((g) => g.label)).toEqual(["Key argument"]);
   });
+
+  it("merges two colors that share a label into one ordered group", () => {
+    const sharedMap: ColorRule[] = [
+      { color: "#ffd400", label: "Key argument", role: "section" },
+      { color: "#ff6666", label: "Key argument", role: "section" },
+      { color: "#a28ae5", label: "Terms", role: "term" },
+    ];
+    const anns = [mk("a", "#ffd400"), mk("b", "#a28ae5"), mk("c", "#ff6666")];
+    const groups = groupByColor(anns, sharedMap, "Unsorted highlights");
+    expect(groups.map((g) => g.label)).toEqual(["Key argument", "Terms"]);
+    // both colors collapse into ONE group, in original annotation order
+    expect(groups[0].annotations.map((a) => a.key)).toEqual(["a", "c"]);
+    expect(groups[1].annotations.map((a) => a.key)).toEqual(["b"]);
+  });
 });
