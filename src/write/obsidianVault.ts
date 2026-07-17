@@ -19,7 +19,8 @@ export class ObsidianVault implements VaultAdapter {
 
   async write(path: string, content: string): Promise<void> {
     const norm = normalizePath(path);
-    await this.ensureFolder(norm.slice(0, norm.lastIndexOf("/")));
+    const slash = norm.lastIndexOf("/");
+    await this.ensureFolder(slash === -1 ? "" : norm.slice(0, slash));
     const existing = this.app.vault.getAbstractFileByPath(norm);
     if (existing instanceof TFile) {
       await this.app.vault.modify(existing, content);
