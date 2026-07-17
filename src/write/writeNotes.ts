@@ -41,12 +41,30 @@ export async function writePaperNotes(
     }
   }
 
-  const summary: WriteSummary = { created: 0, updated: 0, moved: 0 };
-  const usedPaths = new Set<string>();
   const items = [...lib.items].sort((a, b) => a.key.localeCompare(b.key));
 
+  // Pass 1: resolve a unique target path for every item. Item keys are unique,
+  // so appending " <key>" yields a globally unique path — one suffix pass always
+  // resolves a collision. ownerByPath records which key owns each resolved path.
+  const ownerByPath = new Map<string, string>();
+  const targetByKey = new Map<string, string>();
+  for (const item of items) {
+    const base = paperNotePath(item, byId, settings);
+    let target = base;
+    if (ownerByPath.has(target) && ownerByPath.get(target) !== item.key) {
+      target = base.replace(/\.md$/, ` ${item.key}.md`);
+    }
+    ownerByPath.set(target, item.key);
+    targetByKey.set(item.key, target);
+  }
+  const finalTargets = new Set(targetByKey.values());
+
+  // Pass 2: write each note, then remove an old path only if no other item now
+  // owns it (so a moved note never deletes a file another paper just claimed).
+  const summary: WriteSummary = { created: 0, updated: 0, moved: 0 };
   for (const item of items) {
     const prior = priorByKey.get(item.key);
+    const target = targetByKey.get(item.key) as string;
 
     const ctx: RenderContext = {
       colorMap: settings.colorMap,
@@ -57,20 +75,15 @@ export async function writePaperNotes(
       existingStatus: prior?.status ?? undefined,
     };
     const region = renderSyncedRegion(item, ctx);
-
-    let target = paperNotePath(item, byId, settings);
-    if (usedPaths.has(target) && target !== prior?.path) {
-      target = target.replace(/\.md$/, ` ${item.key}.md`);
-    }
-    usedPaths.add(target);
-
     await adapter.write(target, mergeNote(prior?.content ?? null, region));
 
     if (!prior) {
       summary.created += 1;
     } else if (prior.path !== target) {
-      await adapter.remove(prior.path);
       summary.moved += 1;
+      if (!finalTargets.has(prior.path)) {
+        await adapter.remove(prior.path);
+      }
     } else {
       summary.updated += 1;
     }

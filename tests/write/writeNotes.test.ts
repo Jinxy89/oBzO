@@ -77,4 +77,20 @@ describe("writePaperNotes", () => {
       "zotero/_Unfiled/Attention Is All You Need.md",
     ]);
   });
+
+  it("does not drop a new paper that shares a title with an incumbent note", async () => {
+    const plain = "zotero/_Unfiled/Attention Is All You Need.md";
+    const seeded = `---\nzotero-key: BBBB2222\nstatus: unread\n---\nx\n${SYNC_END_MARKER}\n## My Notes\nincumbent\n`;
+    const vault = new InMemoryVault({ [plain]: seeded });
+    const aNew = item({ key: "AAAA1111", collectionIds: [] }); // new, sorts first
+    const bOld = item({ key: "BBBB2222", collectionIds: [] }); // incumbent at plain path
+    await writePaperNotes(lib([aNew, bOld]), DEFAULT_SETTINGS, vault);
+    const contents = [...vault.files.values()].join("\n===\n");
+    // both papers keep a file — neither silently dropped
+    expect(vault.files.size).toBe(2);
+    expect(contents).toContain("zotero-key: AAAA1111");
+    expect(contents).toContain("zotero-key: BBBB2222");
+    // the incumbent's protected zone survives
+    expect(contents).toContain("## My Notes\nincumbent");
+  });
 });
