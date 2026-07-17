@@ -5,6 +5,7 @@ export interface Creator {
 
 export interface Annotation {
   key: string;
+  attachmentKey: string;
   text: string | null;
   comment: string | null;
   color: string;

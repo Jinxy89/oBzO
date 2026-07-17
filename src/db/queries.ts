@@ -112,14 +112,17 @@ function annotationsForPaper(db: Database, paperItemID: number): Annotation[] {
   return rows(
     db,
     `SELECT ann.text AS text, ann.comment AS comment, ann.color AS color,
-            ann.pageLabel AS pageLabel, ann.sortIndex AS sortIndex, i.key AS key
+            ann.pageLabel AS pageLabel, ann.sortIndex AS sortIndex,
+            i.key AS key, attItem.key AS attachmentKey
      FROM itemAnnotations ann
      JOIN itemAttachments att ON att.itemID = ann.parentItemID
+     JOIN items attItem ON attItem.itemID = att.itemID
      JOIN items i ON i.itemID = ann.itemID
      WHERE att.parentItemID = ${paperItemID}
      ORDER BY ann.sortIndex`
   ).map((r) => ({
     key: String(r.key),
+    attachmentKey: String(r.attachmentKey),
     text: r.text == null ? null : String(r.text),
     comment: r.comment == null ? null : String(r.comment),
     color: String(r.color ?? ""),

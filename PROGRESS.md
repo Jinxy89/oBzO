@@ -19,7 +19,9 @@ or make a decision, we log it here with a date so the completion status of each 
 | 3 | Written spec / design doc (`SPEC.md`) | 🟢 Approved | 2026-07-16 |
 | 4 | Implementation plan — foundation (`docs/plans/2026-07-16-foundation.md`) | 🟢 Written | 2026-07-16 |
 | 5 | Implementation — foundation slice (scaffold + DB reader + model) | 🟢 Done — 5/5 tasks, reviewed (ready to merge) | 2026-07-16 |
-| 6 | Implementation plans — later slices (render, write, stubs, dashboard) | ⬜ Not started | — |
+| 6 | Rendering slice — plan (`docs/plans/2026-07-16-rendering.md`) | 🟢 Written | 2026-07-16 |
+| 7 | Rendering slice — implementation (transform layer: frontmatter, colors, deep links, block IDs, render) | 🟢 Done — 6/6 tasks, reviewed (ready to merge) | 2026-07-16 |
+| 8 | Implementation plans — remaining slices (write/placement+merge, stubs, dashboard) | ⬜ Not started | — |
 
 Legend: ⬜ not started · 🟠 in progress · 🟡 drafted/pending · 🟢 done
 
@@ -103,3 +105,4 @@ Round 2 design is complete. Proceeding to write the consolidated spec (`SPEC.md`
 | 2026-07-10 | Round 2 scoped to the deterministic knowledge/linking layer; explicitly **no AI**. |
 | 2026-07-16 | Spec approved. Foundation implementation plan written (`docs/plans/2026-07-16-foundation.md`): 5 TDD tasks — scaffold, domain model, DB snapshot, queries, sync skeleton. Scoped to SPEC §12 build steps 1–2; render/write/stubs/dashboard deferred to later plans. |
 | 2026-07-16 | Foundation implemented via subagent-driven TDD on branch `obzo-foundation` (9 commits `5ff5008`..`b17267e`). 10/10 tests, `typecheck` exit 0, `main.js` builds. Final whole-branch review: **ready to merge**, no Critical. Tracked follow-ups (see `.superpowers/sdd/progress.md`): **(Important)** ship `sql-wasm.wasm` + `locateFile` so the command runs inside Obsidian (tests pass via node_modules but Electron needs the wasm delivered); (Minor) WAL sidecar copy, N+1 queries, trashed/note-item filtering; (coverage) `relatedKeysFor`, untitled/null-firstName/post-copy-error branches. |
+| 2026-07-16 | Rendering slice implemented via subagent-driven TDD on branch `obzo-rendering` (7 commits `c958825`..`45d0e5a`, from `acfc0cf`). Pure transform layer under `src/transform/`: `attachmentKey` on `Annotation` + 2-hop query; `blockIds`/`deepLinks`/`colors`/`frontmatter`/`render`; `groupByColor` (color-map order, label-merge, catch-all, hex-norm); `renderSyncedRegion` → SPEC §4 synced region ending in `<!-- obzo:end -->`. 24/24 tests, `typecheck` exit 0, `build` emits `main.js` + wasm. Controller added a shared-label merge test (`423fa72`) closing a reviewer coverage gap. Final whole-branch review (opus): **ready to merge**, no Critical/Important — contracts, wiring, pure-core layering, determinism, Task-1 JOIN all verified. Minor follow-ups: `DEFAULT_SETTINGS.colorMap` shared instance; `JSON.stringify`≠YAML escaping for exotic chars; abstract truthiness guard. Forward note for the write/merge slice: quote `status` if `existingStatus` ever carries leading YAML metachars. |
