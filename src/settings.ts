@@ -6,6 +6,7 @@ export interface ObzoSettings {
   colorMap: ColorRule[];
   themePrefix: string;
   unsortedLabel: string;
+  unfiledFolder: string;
 }
 
 export const DEFAULT_SETTINGS: ObzoSettings = {
@@ -14,4 +15,5 @@ export const DEFAULT_SETTINGS: ObzoSettings = {
   colorMap: [],
   themePrefix: "theme/",
   unsortedLabel: "Unsorted highlights",
+  unfiledFolder: "_Unfiled",
 };
